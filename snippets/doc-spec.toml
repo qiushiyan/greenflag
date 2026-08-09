@@ -31,7 +31,7 @@ Adapt each to this change — they are the bar for the shape you're about to com
 ## The document's shape
 The spec runs top-down, product to technical, each tier at its own altitude.
 
-**A leader-facing summary, first.** Report the change the way you'd report it to your leader: what we're adding or fixing in product terms; the approach and the scope; and the boundary once it lands — what's fixed, what isn't, what's explicitly deferred (one line why each). Technical detail earns a place here only where it makes the problem or the solution easier to grasp. Someone who reads nothing else should still know what they're getting and not getting.
+**A leader-facing summary, first.** Report the change the way you'd report it to your leader: what we're adding or fixing in product terms; the approach and the scope; and the boundary once it lands — what's fixed, what isn't, what's explicitly deferred (one line why each); and where the change lands on the hot path, a surface users drive often, or core-feature logic, the risk that carries and what holds it down. Technical detail earns a place here only where it makes the problem or the solution easier to grasp. Someone who reads nothing else should still know what they're getting and not getting.
 
 **Product sections** — the goals, the user-facing behaviors, the non-goals. Distinguish current from desired (what's preserved versus what's changing), and name the coupling decision: an extension of an existing concept, or intentionally independent?
 
