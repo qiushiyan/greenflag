@@ -355,6 +355,9 @@ describe('the snippet library', () => {
     expect.soft(body, 'write-spec stopped citing deepening — its dependency categories decide whether a seam needs a port').toContain(
       '{{lessons_dir}}/codebase-design/deepening.md',
     );
+    expect.soft(body, 'write-spec stopped citing composition — how the new shape meets the existing call path is decided here').toContain(
+      '{{lessons_dir}}/codebase-design/composition.md',
+    );
 
     // Skimmed as a lens — the spec names WHICH behaviors matter and what gets
     // faked at which boundary; how to write the tests is the plan's or build's.
@@ -372,6 +375,31 @@ describe('the snippet library', () => {
     expect.soft(body, 'write-spec dropped the three-shapes bar').toMatch(/three shapes/i);
     expect.soft(body, 'write-spec no longer demands the shapes differ in kind').toMatch(/different in kind/i);
     expect.soft(body, 'write-spec dropped the constraint axes that pull the shapes apart').toMatch(/ports and adapters/i);
+  });
+
+  // The composition axis: whether a change was absorbed by the concepts already
+  // there or accreted beside them (a flag, a wrapper, a second mechanism). It is
+  // review's blind spot by construction — accretion announces itself as working
+  // code, so nothing in a diff flags it and a reviewer who accepts the
+  // implementation's framing never asks. The lesson is what makes the axis
+  // reviewable, so the citation is pinned on both review surfaces, and the trace
+  // is pinned separately: a citation without the instrument gets skimmed and
+  // produces nothing.
+  test('the review surfaces carry the composition axis, lesson and trace both', () => {
+    for (const key of ['review-implementation', 'review-plan', 'review-spec']) {
+      expect.soft(getSnippet(key)?.expand ?? '', `snippet "${key}" stopped citing the composition lesson`).toContain(
+        '{{lessons_dir}}/codebase-design/composition.md',
+      );
+    }
+    const impl = getSnippet('review-implementation')?.expand ?? '';
+    expect.soft(impl, 'review-implementation lost the trace — the instrument, without which the citation is decoration').toMatch(/run its trace/i);
+    expect.soft(impl, 'review-implementation stopped asking how the change joins what was there').toMatch(/joins what was there/i);
+    // The counterweight travels with the axis: a reshape proposed for a caller
+    // that doesn't exist is speculative generality, the additive bias one
+    // altitude up. Dropping it turns the axis into a refactor licence.
+    expect.soft(impl, 'the composition axis lost its speculative-generality counterweight').toMatch(/caller that doesn't exist yet/i);
+    // Accretion is a blocker, not a nit — the whole point of naming it.
+    expect.soft(impl, 'the approval bar stopped naming accretion a presumptive blocker').toMatch(/accretion, and missed reshapes/i);
   });
 
   // "Shapes considered" is the one phrase with real callers: write-spec produces the

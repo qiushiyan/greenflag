@@ -3,12 +3,27 @@
 This turn is analysis, not building — work through the problem and the design before any code changes. Reason holistically, grounded in the actual code, not assumptions.
 
 1. **Read the relevant code** to see how things work today. Trace real data/control flow, note existing constraints and why they exist, cite the files/functions you read. Without this, "first principles" is guessing.
-2. **Interview me about ambiguous product intent** (fuzzy terms, unclear scope, priorities you're guessing at) and **push back if my framing seems off**. Ask everything in one batch, clustered by topic — defer only a follow-up that a pending answer would decide or reshape. Make each question decidable from its text alone (I answer from your words, not from the code and context you just read): a line on why it matters, what it actually means in plain product terms, the options with what each implies for the real user, and your recommended answer. Don't ask what code can answer — you've just read it. **For clear, targeted bug fixes, skip this step.**
+2. **Interview me about ambiguous product intent** (fuzzy terms, unclear scope, priorities you're guessing at) and **push back if my framing seems off**. Route and write every question per **How to ask questions** below. Don't ask what code can answer — you've just read it. **For clear, targeted bug fixes, skip this step.**
 3. **State the real problem** and the underlying goal **in your own words**, informed by what you read and learned.
 4. **Evaluate the current design** against the goal — is this a *local* change the structure absorbs cleanly, or is the structure itself in the way? When the foundation fights the change, reach for **preparatory refactoring** (Kent Beck: *make the change easy, then make the easy change*) — reshape the foundation first so the feature becomes a natural addition.
 5. **Explore the design space, then synthesize.** Sketch 2–3 approaches that make *genuinely different bets* — from a contained change within the subsystem's current structure to a rework of its architecture — so they stress-test each other instead of standing in as strawmen for a choice you've already made. Then recommend a direction built *from* that comparison, weighed by how fully it solves the root problem rather than how little it disturbs: combine the best of more than one where it helps, rather than adopt a single option whole. Name the tradeoff you're accepting, and where the decision is genuinely a judgment call, say so.
+6. **Account for the risk the recommendation carries.** Risk here isn't lines changed — an internal refactor can be large and inert. It's whether the change lands on the **hot path** (code that runs on every request, render, or token), on a **surface the user sees or drives often**, or inside a **core feature's execution logic**. For each of those it touches, say what runs differently, what holds the risk down (coverage that already exists, a flag or fallback, a signal that would catch a regression), and — where the risk is real — why it's worth taking. Ground it in the code you read: "adds a branch that only runs in the error path" is an answer, "overhead is minimal" is not. This is an accounting, not a veto — a controlled risk on the hot path is fine, an unexamined one isn't. When the change touches none of the three, one line saying so is the whole step.
 
 Don't patch a flawed design with another patch, and don't shy from structural change when it's justified — but back a "structurally wrong" claim with code and name its cost. Preparatory refactoring is earned only when the structure genuinely blocks the goal, never license to rewrite what merely looks imperfect.
+
+## How to ask questions
+
+Route every question you're tempted to ask into one of three lanes:
+
+- **Product/direction forks** — real decisions with live options that are mine (intent, priorities, UX, scope). Ask these, in the form below. If there are none, say so and move on.
+- **Implementation details** — yours. Decide, record the choice in your analysis, continue.
+- **Technical unknowns that don't change the direction** — record these under **"Open technical questions — parked for the consult round"**, each with your working answer. I read this list without answering it; a later consultation or review round resolves it. Omit the list when it's empty.
+
+Write each fork as if briefing a CEO: I decide from your words alone, not from the code or the session behind them. Each question carries why it matters now, what it means in plain product terms, the options with what each implies for the real user, and your recommendation. Batch them, clustered by topic — defer only a follow-up that a pending answer would decide or reshape. Before sending, check each against: could I decide from this text alone?
+
+<example>
+**Q2 — When a schedule import partially fails, do we save the good rows or reject the file?** This decides what a user sees after uploading a 500-task file with 3 bad rows. Save-partial gets them working immediately but they may not notice the 3 missing tasks; reject-whole is safe but turns one typo into a blocked afternoon. Recommendation: save-partial with a banner naming the failed rows — the blocked afternoon is the worse failure.
+</example>
 </snippet>
 <snippet key="compare-notes">
 Another engineer analyzed the same problem independently. Compare notes and build the sharper direction — take what's genuinely stronger in their reasoning and combine it with yours, rather than defending your draft or averaging the two.
@@ -35,6 +50,7 @@ Adapt each to this change — they are the bar for the shape you're about to com
 - `{{lessons_dir}}/codebase-design/deep-modules.md` — deep modules, seams, the deletion test, illegal states.
 - `{{lessons_dir}}/codebase-design/design-it-twice.md` — how to arrive at an interface instead of settling for the first one. Read it when you write the target-shape section.
 - `{{lessons_dir}}/codebase-design/deepening.md` — read it when the change restructures an existing cluster, or leans on a dependency across a seam you don't own: its dependency categories decide whether a seam needs a port at all.
+- `{{lessons_dir}}/codebase-design/composition.md` — the path *between* modules: what each hop in a call chain adds, whether adjacent layers change the abstraction, and whether a new case gets absorbed by the concepts already there or accretes beside them. Read it whenever this change extends existing code — it decides how the new shape wires into the old one, which is the half of the target shape a spec most often leaves implicit.
 
 **Skim the `## The bar` at the top of each of these.** You decide *which* behaviors matter and what gets faked where; the depth below the bar is for whoever writes the tests.
 - `{{lessons_dir}}/testing/tdd-loop.md` — behavior through interfaces. Which behaviors matter is a product call to surface, not to assume.
@@ -43,7 +59,7 @@ Adapt each to this change — they are the bar for the shape you're about to com
 ## The document's shape
 The spec runs top-down, product to technical, each tier at its own altitude.
 
-**A leader-facing summary, first.** Report the change the way you'd report it to your leader: what we're adding or fixing in product terms; the approach and the scope; and the boundary once it lands — what's fixed, what isn't, what's explicitly deferred (one line why each). Technical detail earns a place here only where it makes the problem or the solution easier to grasp. Someone who reads nothing else should still know what they're getting and not getting.
+**A leader-facing summary, first.** Report the change the way you'd report it to your leader: what we're adding or fixing in product terms; the approach and the scope; and the boundary once it lands — what's fixed, what isn't, what's explicitly deferred (one line why each); and where the change lands on the hot path, a surface users drive often, or core-feature logic, the risk that carries and what holds it down. Technical detail earns a place here only where it makes the problem or the solution easier to grasp. Someone who reads nothing else should still know what they're getting and not getting.
 
 **Product sections** — the goals, the user-facing behaviors, the non-goals. Distinguish current from desired (what's preserved versus what's changing), and name the coupling decision: an extension of an existing concept, or intentionally independent?
 
@@ -111,6 +127,7 @@ I've drafted a spec — the design document for this change. Review critically, 
 
 Background (skim as a lens, don't recite):
 - `{{lessons_dir}}/codebase-design/deep-modules.md` — deep modules, seams, the deletion test
+- `{{lessons_dir}}/codebase-design/composition.md` — pass-throughs, accretion beside an existing mechanism, connascence across a seam
 - `{{lessons_dir}}/testing/tdd-loop.md` — vertical slices, behavior-focused tests, when to mock
 
 The spec runs top-down — product sections (goals, behaviors, non-goals) above technical sections (module boundaries, seams, the target shape, test standards) — and each tier reviews at its own altitude.
@@ -212,7 +229,7 @@ The spec settled the module shape and the seams; this plan owes the test discipl
 - `{{lessons_dir}}/testing/test-quality.md` — what earns a place in the suite; assert tokens and relations, not prose
 - `{{lessons_dir}}/testing/vitest.md` — Vitest APIs *(TS-Vitest projects only)*
 
-Where a structural decision in the spec is still unclear to you, `{{lessons_dir}}/codebase-design/deep-modules.md` is the vocabulary it was written in — read it to plan against that shape, not to redraw it.
+Where a structural decision in the spec is still unclear to you, `{{lessons_dir}}/codebase-design/deep-modules.md` is the vocabulary it was written in — read it to plan against that shape, not to redraw it. Where the unclear part is how the new shape *meets* the existing call path, that is `{{lessons_dir}}/codebase-design/composition.md`.
 
 ## What you're producing
 A plan **complementary to the spec**, not overlapping it. The spec settled the module shape, the seams, the target shape, and the test standards; point to them and spend the tokens on the tactics it deferred: the slices, the sequencing, the specific test cases and fixtures, the line-level anchors — and answer its open questions here. The relay that earns its tokens is a load-bearing gotcha, invariant, or constraint bolded in the exact slice that must honor it, surfaced at the point of action where rereading the spec wouldn't put it in front of you.
@@ -253,6 +270,7 @@ I've drafted an implementation plan. Review with the same rigor as the spec.
 
 Background (skim as a lens, don't recite):
 - `{{lessons_dir}}/codebase-design/deep-modules.md` — deep modules, seams, the deletion test
+- `{{lessons_dir}}/codebase-design/composition.md` — pass-throughs, accretion beside an existing mechanism, connascence across a seam
 - `{{lessons_dir}}/testing/tdd-loop.md` — vertical slices, behavior-focused tests, when to mock
 - `{{lessons_dir}}/testing/test-quality.md` — the test-quality bar: the shapes to reject before they're written
 
@@ -336,6 +354,7 @@ Build the change from the committed spec — it is the authority for what we're 
 ## Read these first, then build
 Read each one and adapt it to this change — they're the bar, not optional background; don't go hunting them mid-build, and ask me for a path if one's missing.
 - `{{lessons_dir}}/codebase-design/deep-modules.md` — deep modules, seams, the deletion test, illegal states
+- `{{lessons_dir}}/codebase-design/composition.md` — how the change joins the existing call path: a hop that adds nothing, a flag threaded down for one distant caller, a second mechanism beside the one already there
 - `{{lessons_dir}}/testing/tdd-loop.md` — vertical slices, red-green-refactor, the anti-patterns
 - `{{lessons_dir}}/testing/mocking-and-fixtures.md` — mock only at boundaries; `test.extend` fixtures
 - `{{lessons_dir}}/testing/test-quality.md` — what earns a place in the suite; assert tokens and relations, not prose
@@ -375,6 +394,7 @@ Build the change directly from the research decisions we settled — those decis
 ## Read these first, then build
 Read each one and adapt it to this change — they're the bar, not optional background; don't go hunting them mid-build, and ask me for a path if one's missing.
 - `{{lessons_dir}}/codebase-design/deep-modules.md` — deep modules, seams, the deletion test, illegal states
+- `{{lessons_dir}}/codebase-design/composition.md` — how the change joins the existing call path: a hop that adds nothing, a flag threaded down for one distant caller, a second mechanism beside the one already there
 - `{{lessons_dir}}/testing/tdd-loop.md` — vertical slices, behavior-focused tests, mock only at boundaries, anti-patterns
 - `{{lessons_dir}}/testing/test-quality.md` — what earns a place in the suite; tokens and relations, not prose pins
 
@@ -493,21 +513,22 @@ This is a guided map, **not a self-review** — don't grade your own work ("corr
 <snippet key="review-implementation">
 Code-review my implementation.
 
-Read `{{lessons_dir}}/collaboration/review-lens.md` first and review in its stance — you are making the calls it governs: step back before endorsing local fixes, hold any test you'd request to its additive-bias bar, flag over-building. For structural findings, skim the `## The bar` of `{{lessons_dir}}/codebase-design/deep-modules.md` and write them in its vocabulary; when the change restructures an existing cluster, skim `{{lessons_dir}}/codebase-design/deepening.md` too — whether a seam earns a port, and replace-don't-layer for the moved tests.
+Read `{{lessons_dir}}/collaboration/review-lens.md` first and review in its stance — you are making the calls it governs: step back before endorsing local fixes, hold any test you'd request to its additive-bias bar, flag over-building. For structural findings, skim the `## The bar` of `{{lessons_dir}}/codebase-design/deep-modules.md` and write them in its vocabulary; when the change restructures an existing cluster, skim `{{lessons_dir}}/codebase-design/deepening.md` too — whether a seam earns a port, and replace-don't-layer for the moved tests. For how the change *joins* what was already there, skim the bar of `{{lessons_dir}}/codebase-design/composition.md` and run its trace.
 
 **This run's lens:**
 - Implementation is fair game across the board — correctness, structure, test quality, performance, readability, edge cases, pattern consistency.
 - **Solves the problem** — does the implementation actually solve the spec's problem, not just pass its own tests?
 - **Test quality** — right altitude (behavior, not internals), covers planned cases + obvious additions, survives plausible refactors, uses project patterns.
 - **Plan ↔ code mismatches** — flag silent deviations: missing planned tests, missing helpers, scope creep.
-- **Spec/plan are settled** — don't relitigate approved decisions. If a fundamental issue only surfaces from the code, say so explicitly; don't smuggle it in as a "small fix."
+- **How it joins what was there** — take one real path this change serves, follow it entry to effect, and name what each hop adds. Did the concepts already in the codebase absorb the new case, or did it get its own route beside them — a flag, a wrapper, a parallel function, a second mechanism answering a question the first one answers? A hop that adds nothing is a finding; so is a reshape you'd propose for a caller that doesn't exist yet.
+- **Spec/plan are settled** — don't relitigate approved decisions. The settled direction fences the *what*, never the wiring: whether the approved thing was bolted onto the existing call path or integrated into it stays fully open. If a fundamental issue only surfaces from the code, say so explicitly; don't smuggle it in as a "small fix."
 - **UX & performance** — user-facing impact, performance characteristics.
 
 **Per issue:**
 - Severity: **critical** (blocks merge) / **moderate** (fix before merge) / **minor** (nice-to-have).
 - Concrete fix with file/function references and enough detail to act on.
 
-**Approval bar:** structural regressions and missed reshapes are presumptive blockers — flag them **critical**, and don't pass the review because the code works.
+**Approval bar:** structural regressions, accretion, and missed reshapes are presumptive blockers — flag them **critical**, and don't pass the review because the code works.
 
 Implementation report below — treat it as a starting point: the implementer's pointers to reduce your overhead, not the boundary of your review. Review the whole feature against its actual goal, and actively look for what the report leaves out; if you only check what the implementer surfaced, it isn't an independent review.
 

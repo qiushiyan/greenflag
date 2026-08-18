@@ -2,7 +2,8 @@
 
 These are **vendored snapshots**, not authored here. They are greenflag's quality
 opinion for the planning and build phases — what counts as good design (deep
-modules, seams, the deletion test, illegal states), good implementation (TDD
+modules, seams, the deletion test, illegal states, and a call path whose every
+hop earns its place), good implementation (TDD
 discipline, mocking strategy, the Vitest toolkit), and a sound review stance
 (the step-back lens, the additive-bias bar). The planning and build
 snippets (`snippets/doc-plan.toml`, `snippets/doc-spec.toml`,
@@ -14,8 +15,11 @@ They ship in the npm package (`package.json` `files` includes `lessons`).
 ## The three topics
 
 - [`codebase-design/`](codebase-design/) — module-design vocabulary and
-  structural patterns: `deep-modules.md` (always), `deepening.md` (when
-  restructuring), `design-it-twice.md` (when the interface is uncertain).
+  structural patterns: `deep-modules.md` (always), `composition.md` (whenever
+  the change extends existing code — how the call path between modules joins
+  up, and whether a change was absorbed or accreted beside what was there),
+  `deepening.md` (when restructuring), `design-it-twice.md` (when the interface
+  is uncertain).
 - [`testing/`](testing/) — test discipline and tooling: `tdd-loop.md` (always),
   `mocking-and-fixtures.md` (always), `test-quality.md` (always — what earns a
   place in the suite, and the shapes that don't), `vitest.md` (TS-Vitest

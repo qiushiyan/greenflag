@@ -36,7 +36,7 @@ The spec settled the module shape and the seams; this plan owes the test discipl
 - `{{lessons_dir}}/testing/test-quality.md` — what earns a place in the suite; assert tokens and relations, not prose
 - `{{lessons_dir}}/testing/vitest.md` — Vitest APIs *(TS-Vitest projects only)*
 
-Where a structural decision in the spec is still unclear to you, `{{lessons_dir}}/codebase-design/deep-modules.md` is the vocabulary it was written in — read it to plan against that shape, not to redraw it.
+Where a structural decision in the spec is still unclear to you, `{{lessons_dir}}/codebase-design/deep-modules.md` is the vocabulary it was written in — read it to plan against that shape, not to redraw it. Where the unclear part is how the new shape *meets* the existing call path, that is `{{lessons_dir}}/codebase-design/composition.md`.
 
 ## What you're producing
 A plan **complementary to the spec**, not overlapping it. The spec settled the module shape, the seams, the target shape, and the test standards; point to them and spend the tokens on the tactics it deferred: the slices, the sequencing, the specific test cases and fixtures, the line-level anchors — and answer its open questions here. The relay that earns its tokens is a load-bearing gotcha, invariant, or constraint bolded in the exact slice that must honor it, surfaced at the point of action where rereading the spec wouldn't put it in front of you.
@@ -79,6 +79,7 @@ I've drafted an implementation plan. Review with the same rigor as the spec.
 
 Background (skim as a lens, don't recite):
 - `{{lessons_dir}}/codebase-design/deep-modules.md` — deep modules, seams, the deletion test
+- `{{lessons_dir}}/codebase-design/composition.md` — pass-throughs, accretion beside an existing mechanism, connascence across a seam
 - `{{lessons_dir}}/testing/tdd-loop.md` — vertical slices, behavior-focused tests, when to mock
 - `{{lessons_dir}}/testing/test-quality.md` — the test-quality bar: the shapes to reject before they're written
 

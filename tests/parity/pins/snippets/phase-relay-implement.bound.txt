@@ -7,6 +7,7 @@ Build the change from the committed spec — it is the authority for what we're 
 ## Read these first, then build
 Read each one and adapt it to this change — they're the bar, not optional background; don't go hunting them mid-build, and ask me for a path if one's missing.
 - `{{lessons_dir}}/codebase-design/deep-modules.md` — deep modules, seams, the deletion test, illegal states
+- `{{lessons_dir}}/codebase-design/composition.md` — how the change joins the existing call path: a hop that adds nothing, a flag threaded down for one distant caller, a second mechanism beside the one already there
 - `{{lessons_dir}}/testing/tdd-loop.md` — vertical slices, red-green-refactor, the anti-patterns
 - `{{lessons_dir}}/testing/mocking-and-fixtures.md` — mock only at boundaries; `test.extend` fixtures
 - `{{lessons_dir}}/testing/test-quality.md` — what earns a place in the suite; assert tokens and relations, not prose

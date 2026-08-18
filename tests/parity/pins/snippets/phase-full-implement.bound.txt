@@ -102,21 +102,22 @@ This is a guided map, **not a self-review** — don't grade your own work ("corr
 <snippet key="review-implementation">
 Code-review my implementation.
 
-Read `{{lessons_dir}}/collaboration/review-lens.md` first and review in its stance — you are making the calls it governs: step back before endorsing local fixes, hold any test you'd request to its additive-bias bar, flag over-building. For structural findings, skim the `## The bar` of `{{lessons_dir}}/codebase-design/deep-modules.md` and write them in its vocabulary; when the change restructures an existing cluster, skim `{{lessons_dir}}/codebase-design/deepening.md` too — whether a seam earns a port, and replace-don't-layer for the moved tests.
+Read `{{lessons_dir}}/collaboration/review-lens.md` first and review in its stance — you are making the calls it governs: step back before endorsing local fixes, hold any test you'd request to its additive-bias bar, flag over-building. For structural findings, skim the `## The bar` of `{{lessons_dir}}/codebase-design/deep-modules.md` and write them in its vocabulary; when the change restructures an existing cluster, skim `{{lessons_dir}}/codebase-design/deepening.md` too — whether a seam earns a port, and replace-don't-layer for the moved tests. For how the change *joins* what was already there, skim the bar of `{{lessons_dir}}/codebase-design/composition.md` and run its trace.
 
 **This run's lens:**
 - Implementation is fair game across the board — correctness, structure, test quality, performance, readability, edge cases, pattern consistency.
 - **Solves the problem** — does the implementation actually solve the spec's problem, not just pass its own tests?
 - **Test quality** — right altitude (behavior, not internals), covers planned cases + obvious additions, survives plausible refactors, uses project patterns.
 - **Plan ↔ code mismatches** — flag silent deviations: missing planned tests, missing helpers, scope creep.
-- **Spec/plan are settled** — don't relitigate approved decisions. If a fundamental issue only surfaces from the code, say so explicitly; don't smuggle it in as a "small fix."
+- **How it joins what was there** — take one real path this change serves, follow it entry to effect, and name what each hop adds. Did the concepts already in the codebase absorb the new case, or did it get its own route beside them — a flag, a wrapper, a parallel function, a second mechanism answering a question the first one answers? A hop that adds nothing is a finding; so is a reshape you'd propose for a caller that doesn't exist yet.
+- **Spec/plan are settled** — don't relitigate approved decisions. The settled direction fences the *what*, never the wiring: whether the approved thing was bolted onto the existing call path or integrated into it stays fully open. If a fundamental issue only surfaces from the code, say so explicitly; don't smuggle it in as a "small fix."
 - **UX & performance** — user-facing impact, performance characteristics.
 
 **Per issue:**
 - Severity: **critical** (blocks merge) / **moderate** (fix before merge) / **minor** (nice-to-have).
 - Concrete fix with file/function references and enough detail to act on.
 
-**Approval bar:** structural regressions and missed reshapes are presumptive blockers — flag them **critical**, and don't pass the review because the code works.
+**Approval bar:** structural regressions, accretion, and missed reshapes are presumptive blockers — flag them **critical**, and don't pass the review because the code works.
 
 Implementation report below — treat it as a starting point: the implementer's pointers to reduce your overhead, not the boundary of your review. Review the whole feature against its actual goal, and actively look for what the report leaves out; if you only check what the implementer surfaced, it isn't an independent review.
 

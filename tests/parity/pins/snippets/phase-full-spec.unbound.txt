@@ -13,6 +13,7 @@ Adapt each to this change — they are the bar for the shape you're about to com
 - `{{lessons_dir}}/codebase-design/deep-modules.md` — deep modules, seams, the deletion test, illegal states.
 - `{{lessons_dir}}/codebase-design/design-it-twice.md` — how to arrive at an interface instead of settling for the first one. Read it when you write the target-shape section.
 - `{{lessons_dir}}/codebase-design/deepening.md` — read it when the change restructures an existing cluster, or leans on a dependency across a seam you don't own: its dependency categories decide whether a seam needs a port at all.
+- `{{lessons_dir}}/codebase-design/composition.md` — the path *between* modules: what each hop in a call chain adds, whether adjacent layers change the abstraction, and whether a new case gets absorbed by the concepts already there or accretes beside them. Read it whenever this change extends existing code — it decides how the new shape wires into the old one, which is the half of the target shape a spec most often leaves implicit.
 
 **Skim the `## The bar` at the top of each of these.** You decide *which* behaviors matter and what gets faked where; the depth below the bar is for whoever writes the tests.
 - `{{lessons_dir}}/testing/tdd-loop.md` — behavior through interfaces. Which behaviors matter is a product call to surface, not to assume.
@@ -21,7 +22,7 @@ Adapt each to this change — they are the bar for the shape you're about to com
 ## The document's shape
 The spec runs top-down, product to technical, each tier at its own altitude.
 
-**A leader-facing summary, first.** Report the change the way you'd report it to your leader: what we're adding or fixing in product terms; the approach and the scope; and the boundary once it lands — what's fixed, what isn't, what's explicitly deferred (one line why each). Technical detail earns a place here only where it makes the problem or the solution easier to grasp. Someone who reads nothing else should still know what they're getting and not getting.
+**A leader-facing summary, first.** Report the change the way you'd report it to your leader: what we're adding or fixing in product terms; the approach and the scope; and the boundary once it lands — what's fixed, what isn't, what's explicitly deferred (one line why each); and where the change lands on the hot path, a surface users drive often, or core-feature logic, the risk that carries and what holds it down. Technical detail earns a place here only where it makes the problem or the solution easier to grasp. Someone who reads nothing else should still know what they're getting and not getting.
 
 **Product sections** — the goals, the user-facing behaviors, the non-goals. Distinguish current from desired (what's preserved versus what's changing), and name the coupling decision: an extension of an existing concept, or intentionally independent?
 
@@ -89,6 +90,7 @@ I've drafted a spec — the design document for this change. Review critically, 
 
 Background (skim as a lens, don't recite):
 - `{{lessons_dir}}/codebase-design/deep-modules.md` — deep modules, seams, the deletion test
+- `{{lessons_dir}}/codebase-design/composition.md` — pass-throughs, accretion beside an existing mechanism, connascence across a seam
 - `{{lessons_dir}}/testing/tdd-loop.md` — vertical slices, behavior-focused tests, when to mock
 
 The spec runs top-down — product sections (goals, behaviors, non-goals) above technical sections (module boundaries, seams, the target shape, test standards) — and each tier reviews at its own altitude.
