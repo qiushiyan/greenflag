@@ -97,8 +97,8 @@ describe('blueprintModel — the config-resolved default overlay', () => {
     // The label is the human binding form: the shipped default runs makers on
     // claude (with the defaulted model) and checkers on codex.
     const byAddress = Object.fromEntries(model.bindings.map((b) => [b.address, b.label]));
-    expect(byAddress.architect).toBe('claude:claude-opus-4-8');
-    expect(byAddress.builder).toBe('claude:claude-opus-4-8');
+    expect(byAddress.architect).toBe('claude:claude-fable-5-1');
+    expect(byAddress.builder).toBe('claude:claude-fable-5-1');
     expect(byAddress.analyst).toBe('codex');
     expect(byAddress.critic).toBe('codex');
   });

@@ -107,18 +107,18 @@ Run state lives in `.greenflag/runs/<id>/` (self-ignored from git). `state.json`
 
 ## Configure
 
-Optional. The defaults work out of the box: makers and the orchestrator on claude/Opus, checkers on codex — cross-family review is the shipped posture. Reach for `~/.config/greenflag/config.toml` when you want a different model behind a duty:
+Optional. The defaults work out of the box: makers and the orchestrator on claude/Fable 5.1, checkers on codex — cross-family review is the shipped posture. Reach for `~/.config/greenflag/config.toml` when you want a different model behind a duty:
 
 ```toml
 budget = "off"              # per-turn cost caps: "off" (default), "default", or a multiplier like 0.5/2
 
 [orchestrator]
 provider = "claude"         # must be claude in v1
-model = "claude-opus-4-8"
+model = "claude-fable-5-1"
 
 [duties.architect]          # planning's maker — drafts the spec and plan
 provider = "claude"
-model = "claude-opus-4-8"
+model = "claude-fable-5-1"
 effort = "high"             # low | medium | high | xhigh (+ claude's max, codex's minimal)
 
 [duties.analyst]            # planning's checker — critiques the documents
@@ -126,8 +126,8 @@ provider = "codex"          # absent model/effort ⇒ your ~/.codex/config.toml 
 
 [duties.builder]            # delivery's maker — writes the code and the PR
 provider = "claude"
-model = "claude-opus-4-8"
-# claude_args = ["--fallback-model", "claude-opus-4-6"]   # native passthrough, unparsed
+model = "claude-fable-5-1"
+# claude_args = ["--fallback-model", "claude-opus-5"]   # native passthrough, unparsed
 
 [duties.critic]             # delivery's checker (full/blueprint/short) — read-only
 provider = "codex"
@@ -135,7 +135,7 @@ provider = "codex"
 
 [duties.judge]              # delivery's checker on relay — reviews WITH write access
 provider = "claude"
-model = "claude-opus-4-8"
+model = "claude-fable-5-1"
 
 # [consultant]              # optional advisor — off by default; see below
 # provider = "codex"
@@ -195,8 +195,8 @@ Each stage pairs two **workers**, identified by **duty**, with a read-only **orc
 
 | Voice | Does | Default |
 | --- | --- | --- |
-| **Orchestrator** | Routes the protocol — never writes code; triages and decides who answers what | `claude` (Opus) |
-| **architect** · **builder** — the makers | The architect writes the spec and plan; the builder writes the code and the PR | `claude` (Opus) |
+| **Orchestrator** | Routes the protocol — never writes code; triages and decides who answers what | `claude` (Fable 5.1) |
+| **architect** · **builder** — the makers | The architect writes the spec and plan; the builder writes the code and the PR | `claude` (Fable 5.1) |
 | **analyst** · **critic** / **judge** — the checkers | Critique each artifact — read-only, except relay's judge, which fixes what it finds | `codex` |
 
 Between stops a detached process drives the phase; nothing runs while a run is parked. Docs are reconciled as the last step of implementation, so the **SHIP** gate reviews code and docs together. The **OPEN-PR** gate sits *after* the PR opens — it auto-crosses by default, since opening is non-destructive. A pre-authorized gate auto-crosses only on a clean packet: a `high`-severity decision holds the run for you instead, and an `ask_human` question stops it under any posture. **The merge is always yours.**

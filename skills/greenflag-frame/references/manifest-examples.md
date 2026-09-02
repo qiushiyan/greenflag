@@ -47,7 +47,7 @@ One committed spec carries the whole design, absorbing the tactics full defers t
 ---
 workflow: relay
 bind.builder: codex
-bind.judge: claude:claude-fable-5
+bind.judge: claude:claude-opus-5
 ---
 
 # Problem

@@ -297,10 +297,10 @@ describe('the greenflag-frame manifest examples are EXECUTABLE — parsed by the
   test('3 · the standard relay: the criss-cross binds freeze exactly as the prose claims', () => {
     const { meta } = parseFramingFile(framings[2]!);
     expect.soft(meta.workflow).toBe('relay');
-    expect.soft(meta.binds).toEqual({ builder: 'codex', judge: 'claude:claude-fable-5' });
+    expect.soft(meta.binds).toEqual({ builder: 'codex', judge: 'claude:claude-opus-5' });
     const { bindings, degradedEdges } = resolveRunConfig({ workflow: 'relay', framingBinds: meta.binds }, noConfig);
     expect.soft(bindings.duties['builder']).toEqual({ provider: 'codex' });
-    expect.soft(bindings.duties['judge']).toEqual({ provider: 'claude', model: 'claude-fable-5', transport: 'headless' });
+    expect.soft(bindings.duties['judge']).toEqual({ provider: 'claude', model: 'claude-opus-5', transport: 'headless' });
     // The omission claim: planning stays on the shipped defaults.
     expect.soft(bindings.duties['architect']).toEqual({ provider: 'claude', model: DEFAULT_CLAUDE_MODEL, transport: 'headless' });
     expect.soft(bindings.duties['analyst']).toEqual({ provider: 'codex' });

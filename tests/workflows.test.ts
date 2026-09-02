@@ -154,7 +154,7 @@ describe('greenflag workflows check', () => {
     // Without a consultant bound: bindings show the defaults, checkpoints are latent.
     const plain = renderWorkflowCheck(checkModel(resolved), projectDir);
     expect.soft(plain).toContain('bindings (defaults · resolved from ~/.config/greenflag/config.toml)');
-    expect.soft(plain).toMatch(/architect\s+claude:claude-opus-4-8/);
+    expect.soft(plain).toMatch(/architect\s+claude:claude-fable-5-1/);
     expect.soft(plain).toMatch(/analyst\s+codex/);
     expect.soft(plain).toContain('consultant checkpoints   (fire when a consultant is bound)');
     // The per-phase checkpoint kinds, render-facing (never the internal `challenge`).

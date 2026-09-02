@@ -109,8 +109,8 @@ describe('the shipped defaults', () => {
   test('a missing config freezes the shipped posture: claude maker lane, codex checker lane, no consultant', ({ projectDir }) => {
     const { bindings, degradedEdges } = resolveRunConfig({ workflow: 'full' }, missing(projectDir));
     expect.soft(bindings).toEqual(defaultBindingsFor('full'));
-    expect.soft(dutyBindingFor(bindings, 'architect')).toEqual({ provider: 'claude', model: 'claude-opus-4-8', transport: 'headless' });
-    expect.soft(dutyBindingFor(bindings, 'builder')).toEqual({ provider: 'claude', model: 'claude-opus-4-8', transport: 'headless' });
+    expect.soft(dutyBindingFor(bindings, 'architect')).toEqual({ provider: 'claude', model: 'claude-fable-5-1', transport: 'headless' });
+    expect.soft(dutyBindingFor(bindings, 'builder')).toEqual({ provider: 'claude', model: 'claude-fable-5-1', transport: 'headless' });
     expect.soft(dutyBindingFor(bindings, 'analyst')).toEqual({ provider: 'codex' });
     expect.soft(dutyBindingFor(bindings, 'critic')).toEqual({ provider: 'codex' });
     expect.soft(bindings.consultant).toBeUndefined();
@@ -127,7 +127,7 @@ describe('the shipped defaults', () => {
   test('defaultBindingsFor hands out fresh objects — mutating one freeze never leaks into the next', () => {
     const a = defaultBindingsFor('full');
     dutyBindingFor(a, 'builder').model = 'mutated';
-    expect(dutyBindingFor(defaultBindingsFor('full'), 'builder').model).toBe('claude-opus-4-8');
+    expect(dutyBindingFor(defaultBindingsFor('full'), 'builder').model).toBe('claude-fable-5-1');
   });
 });
 
@@ -136,7 +136,7 @@ describe('the config file — top-level [orchestrator]/[consultant] + [duties.*]
     const path = configIn(projectDir, '[duties.builder]\nprovider = "codex"');
     const { bindings } = resolveRunConfig({ workflow: 'full' }, path);
     expect.soft(dutyBindingFor(bindings, 'builder')).toEqual({ provider: 'codex' });
-    expect.soft(dutyBindingFor(bindings, 'architect')).toEqual({ provider: 'claude', model: 'claude-opus-4-8', transport: 'headless' });
+    expect.soft(dutyBindingFor(bindings, 'architect')).toEqual({ provider: 'claude', model: 'claude-fable-5-1', transport: 'headless' });
   });
 
   test('a [consultant] table binds the consultant for every run', ({ projectDir }) => {
@@ -298,7 +298,7 @@ describe('the consultant’s on/off axis composes with its binding', () => {
     expect.soft(resolveRunConfig({ workflow: 'full', consultantToggle: 'off' }, bound(projectDir)).bindings.consultant).toBeUndefined();
     expect.soft(resolveRunConfig({ workflow: 'full', consultantToggle: 'on' }, missing(projectDir)).bindings.consultant).toEqual({
       provider: 'claude',
-      model: 'claude-opus-4-8',
+      model: 'claude-fable-5-1',
       transport: 'headless',
     });
     // on + config-bound: the toggle enables, the config supplies the binding.
@@ -308,13 +308,13 @@ describe('the consultant’s on/off axis composes with its binding', () => {
   test('a bind.consultant alone implies bound; a flag bind wins over a framing off-toggle', ({ projectDir }) => {
     expect.soft(resolveRunConfig({ workflow: 'full', framingBinds: { consultant: 'claude' } }, missing(projectDir)).bindings.consultant).toEqual({
       provider: 'claude',
-      model: 'claude-opus-4-8',
+      model: 'claude-fable-5-1',
       transport: 'headless',
     });
     expect.soft(
       resolveRunConfig({ workflow: 'full', consultantToggle: 'off', flagBinds: { consultant: 'claude' } }, missing(projectDir)).bindings
         .consultant,
-    ).toEqual({ provider: 'claude', model: 'claude-opus-4-8', transport: 'headless' });
+    ).toEqual({ provider: 'claude', model: 'claude-fable-5-1', transport: 'headless' });
   });
 });
 

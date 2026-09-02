@@ -322,7 +322,7 @@ program
   )
   .option(
     '--bind <duty=provider[:model][@effort]>',
-    'bind a duty (or run-long voice) for this run, repeatable — e.g. --bind builder=codex:gpt-5-codex@high --bind judge=claude:claude-fable-5. Codex takes an inline model too (else ~/.codex/config.toml governs); effort is low|medium|high|xhigh (+ claude max, codex minimal); native-arg passthrough (claude_args/codex_config) is config-only. Duties: architect/analyst (planning), builder/critic-or-judge (delivery); a duty alone names its stage. orchestrator (claude-only) and consultant (binding one implies it is on) ride the same grammar. Precedence per key: flags > framing bind.* > config > defaults',
+    'bind a duty (or run-long voice) for this run, repeatable — e.g. --bind builder=codex:gpt-5-codex@high --bind judge=claude:claude-opus-5. Codex takes an inline model too (else ~/.codex/config.toml governs); effort is low|medium|high|xhigh (+ claude max, codex minimal); native-arg passthrough (claude_args/codex_config) is config-only. Duties: architect/analyst (planning), builder/critic-or-judge (delivery); a duty alone names its stage. orchestrator (claude-only) and consultant (binding one implies it is on) ride the same grammar. Precedence per key: flags > framing bind.* > config > defaults',
     (value: string, prev: string[]) => [...prev, value],
     [] as string[],
   )

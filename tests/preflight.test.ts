@@ -15,7 +15,7 @@ import { FakeWorker, test } from './helpers/fixtures.ts';
 describe('bindingNeedsPreflight', () => {
   test('skips pure defaults but catches explicit provider-validated knobs', () => {
     expect.soft(bindingNeedsPreflight({ provider: 'codex' })).toBe(false);
-    expect.soft(bindingNeedsPreflight({ provider: 'claude', model: 'claude-opus-4-8', transport: 'headless' })).toBe(false);
+    expect.soft(bindingNeedsPreflight({ provider: 'claude', model: 'claude-fable-5-1', transport: 'headless' })).toBe(false);
     expect.soft(bindingNeedsPreflight({ provider: 'codex', model: 'gpt-5.5' })).toBe(true);
     expect.soft(bindingNeedsPreflight({ provider: 'claude', model: 'claude-fable-5', transport: 'headless' })).toBe(true);
     expect.soft(bindingNeedsPreflight({ provider: 'codex', native: { codexConfig: { model_reasoning_summary: 'detailed' } } })).toBe(true);

@@ -301,7 +301,7 @@ describe('buildStatsModel — the fs composer over real appendVoiceLog output', 
     appendVoiceLog(run, 'orchestrator', 'advance_phase (implement)', 'ok');
 
     const byPhase = Object.fromEntries(buildStatsModel(run).phases.map((p) => [p.phase, p.makerModel]));
-    expect.soft(byPhase['plan']).toBe('claude-opus-4-8'); // planning ran on the base model
+    expect.soft(byPhase['plan']).toBe('claude-fable-5-1'); // planning ran on the base model
     expect.soft(byPhase['implement']).toBe('claude-sonnet-5'); // the build ran on the impl model
   });
 

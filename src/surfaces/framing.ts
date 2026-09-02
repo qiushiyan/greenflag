@@ -83,7 +83,7 @@ export const FRAMING_TEMPLATE = `---
 #                           Not for short, which has no document.
 # bind.<duty>: provider[:model] — bind a duty for this run, e.g.
 #                           "bind.builder: codex" or "bind.judge:
-#                           claude:claude-fable-5". Duties: architect/analyst
+#                           claude:claude-opus-5". Duties: architect/analyst
 #                           (planning), builder/critic-or-judge (delivery);
 #                           bind.consultant also works (and implies consultant
 #                           on). Flags (--bind) win; unbound duties take

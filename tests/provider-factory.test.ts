@@ -100,7 +100,7 @@ describe('createWorkers', () => {
       return argv;
     };
     const planArgv = await argvForPhase('plan');
-    expect.soft(planArgv[planArgv.indexOf('--model') + 1]).toBe('claude-opus-4-8'); // planning: the architect's smart base
+    expect.soft(planArgv[planArgv.indexOf('--model') + 1]).toBe('claude-fable-5-1'); // planning: the architect's smart base
     expect.soft(planArgv).not.toContain('--effort');
 
     const implArgv = await argvForPhase('implement');

@@ -66,12 +66,12 @@ export interface VoiceBindings {
 }
 
 /**
- * The shipped claude-model default, one constant for every address (Opus 4.8
- * across the board since 2026-06-15). A costlier model — e.g. Fable 5 at ~2×
- * Opus — binds to any single address per run via `--bind` or the config file
- * when an artifact-heavy feature warrants it.
+ * The shipped claude-model default, one constant for every address (Fable 5.1
+ * across the board since 2026-09-02). A cheaper model — e.g. Opus 5 at ~half
+ * the cost — binds to any single address per run via `--bind` or the config
+ * file when a lane does not need the frontier model.
  */
-export const DEFAULT_CLAUDE_MODEL = 'claude-opus-4-8';
+export const DEFAULT_CLAUDE_MODEL = 'claude-fable-5-1';
 
 export const CONFIG_PATH = join(homedir(), '.config', 'greenflag', 'config.toml');
 
