@@ -107,6 +107,8 @@ Run state lives in `.greenflag/runs/<id>/` (self-ignored from git). `state.json`
 
 ## Configure
 
+Recommended Codex default: **`gpt-6-astra`**. Set `model = "gpt-6-astra"` in `~/.codex/config.toml` and keep your existing reasoning effort; unpinned Codex duties inherit it. An explicit per-duty model or frozen run binding still wins. [Official model guidance](https://developers.openai.com/api/docs/guides/latest-model).
+
 Optional. The defaults work out of the box: makers and the orchestrator on claude/Fable 5.1, checkers on codex — cross-family review is the shipped posture. Reach for `~/.config/greenflag/config.toml` when you want a different model behind a duty:
 
 ```toml
