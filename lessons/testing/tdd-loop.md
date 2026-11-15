@@ -35,12 +35,12 @@ The cure is the **vertical slice**, driven by tracer bullets: one test → one i
 
 ### 1. Planning
 
-When exploring the codebase, read `CONTEXT.md` (if it exists) so test names and interface vocabulary match the project's domain language, and respect ADRs in the area you're touching.
+When exploring the codebase, read `GLOSSARY.md` (if it exists) so test names and interface vocabulary match the project's domain language, and respect ADRs in the area you're touching.
 
 Settle these before writing code:
 
 - [ ] The interface changes the work needs
-- [ ] The behaviours worth testing, in priority order — named as behaviours, not implementation steps
+- [ ] The behaviours worth testing, in priority order — named as behaviours, not implementation steps, each with a one-line note on what its test catches and what it misses
 - [ ] Opportunities for [deep modules](../codebase-design/deep-modules.md) (small interface, deep implementation) and [design for testability](../codebase-design/deep-modules.md#designing-for-testability)
 
 **You can't test everything**, which makes the priority order the real decision: critical paths and complex logic earn tests, exhaustive edge cases don't. Make that choice deliberately rather than letting it fall out of whatever was easiest to test.
